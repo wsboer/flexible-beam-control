@@ -1,0 +1,6 @@
+slprj/
+codegen/
+*.asv
+*.slxc
+*.mex*
+*.log
