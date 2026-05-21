@@ -3,7 +3,7 @@ clear;clc;
 h = 1e-3;
 
 %Simulation Duration
-Tsim = 20;
+Tsim = 30;
 %Time Vector 
 t = [0:h:Tsim]';
 %Input Vector
@@ -12,8 +12,8 @@ omega = 30;
 phase = 0;
 u_cycle = amplitude*sin(omega*t+phase); %Change this s.t. first 2 seconds have zero input to give time for B switch
 u_step = zeros(size(t)); 
-Tpulse = 0.05;
-v=1/Tpulse;
+Tpulse = 0.5;
+v=amplitude/Tpulse;
 
 u_step(t >= 1 & t < 1 + Tpulse) = v;
 %Gain from Model:
@@ -22,9 +22,18 @@ K = [-0.3972  -0.8279];
 u = u_step;%Choose which input to use
 simin = [t,u]; %This goes into simulink
 %Start Simulation
-sim festotemplate_controller
+sim festotemplate
 
 %Collect output data
+
+%Collect output data
+data = simout.Data; 
+data1 = simout1.Data; % signal values
+time = simout1.Time;   % timestamps
+
+combined = [time u data data1];
+
+writematrix(combined, 'StepDampingData2.csv')
 
 x_laser = -(simout1.Data -mean(simout1.Data(1)));
 x_actuator = simout.Data - mean(simout.Data(1));
