@@ -18,8 +18,8 @@ h = 1e-3; %TimeStep
 %Initial State-Space Model
 A = [[0 1]
     [-K/m -C/m]];
-B = [0
-    -1];
+B = [-1
+    0];
 C = [[1 0]
     [0 1]]; %interested in seeing the states (deflection) ultimate goal is to create controller that minimises these
 D = [0
