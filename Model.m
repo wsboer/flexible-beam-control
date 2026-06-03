@@ -70,4 +70,5 @@ Msys_cl = ss(Acl,B,C,D);
 Mpoles_cl = pole(Msys_cl)
 
 impulse(Msys_cl)
+impulse(sys)
 
