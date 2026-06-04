@@ -1,4 +1,4 @@
-sclear;clc;
+clear;clc;
 
 h = 1e-3;
 
@@ -44,5 +44,13 @@ deflection_velocity = simout3.Data(3:end);
 
 figure
 plot(t,deflection,t,deflection_velocity)
+ylim([-0.15,0.15])
 legend("Beam Deflection", "Beam Deflection Velocity")
 grid on
+
+amplitude_deflection = max(abs(deflection))
+
+combined = [time u deflection deflection_velocity];
+
+writematrix(combined, 'ParameterEvaluation.csv')
+

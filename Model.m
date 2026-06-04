@@ -17,8 +17,8 @@ h = 1e-3; %TimeStep
 
 %Initial State-Space Model
 A = [[0 1]
-    [-5.5^2 -C/m]];
-B = [-1
+    [-(2*pi*5.5)^2 -2*2*pi*5.5*0.7499]];
+B = [-0.07528015464
     0];
 C = [[1 0]
     [0 1]]; %interested in seeing the states (deflection) ultimate goal is to create controller that minimises these
@@ -46,7 +46,10 @@ y = lsim(sys,u,t);
 
 figure
 plot(t,y)
+ylim([-0.15,0.15])
 legend("Deflection","Deflection Velocity")
+
+deflection_amplitude = max(abs(y(:,1)))
 
 %Frequency Domain Analysis
 %FFT

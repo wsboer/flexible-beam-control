@@ -1,13 +1,13 @@
 %Import Data
-data = readtable('ResonanceDataChirp20.csv');
+data = readtable('NoiseMeasurement.csv');
 
 h = 1e-3;
 Fs = 1/h;
 
 t = data.Var1;
 u = data.Var2;
-x_laser = data.Var3;
-x_actuator = data.Var4;
+x_laser = data.Var4;
+x_actuator = data.Var3;
 
 %Processing
 %Set measurements to zero
