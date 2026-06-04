@@ -1,4 +1,4 @@
-clear;clc;
+sclear;clc;
 
 h = 1e-3;
 

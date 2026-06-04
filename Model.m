@@ -17,7 +17,7 @@ h = 1e-3; %TimeStep
 
 %Initial State-Space Model
 A = [[0 1]
-    [-K/m -C/m]];
+    [-5.5^2 -C/m]];
 B = [-1
     0];
 C = [[1 0]
@@ -44,11 +44,32 @@ u = amplitude*sin(omega*t+phase);
 
 y = lsim(sys,u,t);
 
-figure()
+figure
 plot(t,y)
 legend("Deflection","Deflection Velocity")
 
-%Create Experiments
+%Frequency Domain Analysis
+%FFT
+Fs = 1/h;
+y_impulse = impulse(sys);
+FFT_Model = fft(y_impulse);
+N = length(FFT_Model);
+f = (0:N-1)*(Fs/N);
+
+figure
+plot(f(1:floor(N/2)), abs(FFT_Model(1:floor(N/2))))
+
+%PSD's
+
+omega = logspace(-2,2,length(f))
+
+mag = bode(A,B,C,D,1,omega);
+mag = squeeze(mag);
+
+Suy = mag.^2;
+
+figure
+plot(omega, Suy)
 
 R = ctrb(A,B);
 Rank_control = rank(R);
@@ -61,14 +82,15 @@ Ker_W = null(W);
 sys_cl = feedback(sys,1,1,2);
 poles_cl = pole(sys_cl)
 
-K = place(A,B,[-0.2 + 0.1i -0.2-0.1i])
+%K = place(A,B,[-0.2 + 0.1i -0.2-0.1i])
 
-Acl = A - B*K;
+%Acl = A - B*K;
 
-Msys_cl = ss(Acl,B,C,D);
+%Msys_cl = ss(Acl,B,C,D);
 
-Mpoles_cl = pole(Msys_cl)
+%Mpoles_cl = pole(Msys_cl)
 
-impulse(Msys_cl)
-impulse(sys)
+
+%impulse(Msys_cl)
+
 
