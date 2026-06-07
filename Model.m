@@ -44,6 +44,10 @@ u = amplitude*sin(omega*t+phase);
 
 y = lsim(sys,u,t);
 
+combined = [t.' u.' y(:,1) y(:,2)];
+
+writematrix(combined, 'ModelData.csv')
+
 figure
 plot(t,y)
 ylim([-0.15,0.15])
