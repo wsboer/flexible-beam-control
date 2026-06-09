@@ -26,6 +26,7 @@ D = [0
     0];
 
 %Set up Process and Sensor Noise signals for Kalman Filter & LQG design
+%Noise variances: Disturbance & Sensor Noise
 
 Vd = 3;
 Vn = 0.01;
@@ -41,11 +42,17 @@ nyquist(sys)
 Tsim = 10;
 %Time Vector 
 t = 0:h:Tsim;
-%Input Vector
+
+%Input Vector, now with disturbance noise included
 amplitude = 1;
 omega = 20;
 phase = 0;
-u = amplitude*sin(omega*t+phase) + 0*Vd*randn(size(t));
+u = amplitude*sin(omega*t+phase) + Vd*randn(size(t));
+simin1 = [t,u];
+
+Wn = Vn*randn(size(t));
+
+simin2 = [t Wn];
 
 y = lsim(sys,u,t);
 
@@ -104,5 +111,7 @@ Mpoles_cl = pole(Msys_cl)
 
 
 impulse(Msys_cl)
+
+
 
 
