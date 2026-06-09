@@ -20,7 +20,7 @@ A = [[0 1]
     [-(2*pi*5.5)^2 -2*2*pi*5.5*0.7499]];
 B = [-0.07528015464
     0];
-C = [[1 0]
+C = [[0.6 0]
     [0 1]]; %interested in seeing the states (deflection) ultimate goal is to create controller that minimises these
 D = [0
     0];
@@ -45,13 +45,13 @@ t = 0:h:Tsim;
 amplitude = 1;
 omega = 20;
 phase = 0;
-u = amplitude*sin(omega*t+phase) + 0*Vd*randn(size(t));
+u = amplitude*sin(omega*t+phase) + Vd*randn(size(t));
 
 y = lsim(sys,u,t);
 
 combined = [t.' u.' y(:,1) y(:,2)];
 
-%writematrix(combined, 'ModelData.csv')
+writematrix(combined, 'ModelDataVd5Vn001newparam.csv')
 
 figure
 plot(t,y)

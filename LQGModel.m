@@ -20,7 +20,7 @@ A = [[0 1]
     [-(2*pi*5.5)^2 -2*2*pi*5.5*0.7499]];
 B = [-0.07528015464
     0];
-C = [[1 0]
+C = [[0.6 0]
     [0 1]]; %interested in seeing the states (deflection) ultimate goal is to create controller that minimises these
 D = [0
     0];
@@ -47,18 +47,37 @@ t = 0:h:Tsim;
 amplitude = 1;
 omega = 20;
 phase = 0;
-u = amplitude*sin(omega*t+phase) + Vd*randn(size(t));
-simin1 = [t,u];
+u = amplitude*sin(omega*t+phase);
+d = Vd*randn(size(t));
+simin = [t.' u.'];
+simin1 = [t.' d.'];
 
 Wn = Vn*randn(size(t));
 
-simin2 = [t Wn];
+simin2 = [t.' Wn.'];
 
 y = lsim(sys,u,t);
 
 combined = [t.' u.' y(:,1) y(:,2)];
 
 %writematrix(combined, 'ModelData.csv')
+VD = Vd*eye(2);
+
+[L,P,E] = lqe(A,VD,C,VD*0.01,Vn*eye(2));
+
+Kalmansys = ss(A-L*C,[B L], eye(2), 0*[B L])
+
+Ak = A-L*C;
+Bk = [B L];
+Ck = eye(2);
+Dk = 0*[B L];
+
+Q = [[15 0]
+    [0 15]];
+
+R = [[0.1]];
+
+[Klqr,S,P] = lqr(sys,Q,R)
 
 figure
 plot(t,y)

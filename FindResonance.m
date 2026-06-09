@@ -1,5 +1,5 @@
 %Import Data
-data = readtable('NoiseMeasurement.csv');
+data = readtable('ResonanceDataChirp45.csv');
 
 h = 1e-3;
 Fs = 1/h;

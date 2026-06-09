@@ -14,12 +14,13 @@ sim festotemplate
 
 %Collect output data
 
-%Collect output data
-data = simout.Data; 
-data1 = simout1.Data; % signal values
-time = simout1.Time;   % timestamps
+%Collect output data: deflection and deflection velocity
+data = simout2.Data(3:end); % deflection
+data1 = simout3.Data(3:end); % velocity
+time = simout2.Time(3:end);   % timestamps
 
-combined = [time u data data1];
+
+combined = [t u data data1];
 
 writematrix(combined, 'NoiseMeasurement.csv')
 
