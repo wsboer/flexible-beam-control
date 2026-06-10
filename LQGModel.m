@@ -39,7 +39,7 @@ eigs = eig(sys)
 nyquist(sys)
 
 %Simulation Duration
-Tsim = 10;
+Tsim = 15;
 %Time Vector 
 t = 0:h:Tsim;
 
@@ -47,7 +47,26 @@ t = 0:h:Tsim;
 amplitude = 1;
 omega = 20;
 phase = 0;
-u = amplitude*sin(omega*t+phase);
+u_cycle = amplitude*sin(omega*t+phase);
+
+Tpulse = 0.05;
+v=30/Tpulse;
+u_step = zeros(size(t));
+
+u_step(t >= 1 & t < 1 + Tpulse*0.75) = v;
+
+u_step(t >= 2 & t < 2 + Tpulse*0.75) = -v;
+
+u_step(t >= 4 & t < 4 + Tpulse) = 1.5*v;
+
+u_step(t >= 8 & t < 8 + Tpulse) = -v;
+
+u_step(t >= 11 & t < 11 + Tpulse) = v;
+
+
+u = u_step;%Choose which input to use 
+
+%u = amplitude*sin(omega*t+phase);
 d = Vd*randn(size(t));
 simin = [t.' u.'];
 simin1 = [t.' d.'];
@@ -72,8 +91,8 @@ Bk = [B L];
 Ck = eye(2);
 Dk = 0*[B L];
 
-Q = [[15 0]
-    [0 15]];
+Q = [[40 0]
+    [0 80]];
 
 R = [[0.1]];
 
@@ -104,6 +123,7 @@ omega = logspace(-2,2,length(f))
 mag = bode(A,B,C,D,1,omega);
 mag = squeeze(mag);
 
+bode(A,B,C,D,1,omega)
 Suy = mag.^2;
 
 figure

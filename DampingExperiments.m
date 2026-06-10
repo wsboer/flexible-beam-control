@@ -3,7 +3,7 @@ clear;clc;
 h = 1e-3;
 
 %Simulation Duration
-Tsim = 30;
+Tsim = 60;
 %Time Vector 
 t = [0:h:Tsim]';
 %Input Vector
@@ -17,12 +17,12 @@ v=amplitude/Tpulse;
 
 u_step(t >= 1 & t < 1 + Tpulse) = v;
 %Gain from Model:
-K = [-0.3972  -0.8279];
+Klqr = [0 0];
 
 u = u_step;%Choose which input to use
 simin = [t,u]; %This goes into simulink
 %Start Simulation
-sim festotemplate
+sim festotemplate_controller
 
 %Collect output data
 
@@ -33,7 +33,7 @@ time = simout1.Time;   % timestamps
 
 combined = [time u data data1];
 
-writematrix(combined, 'StepDampingData4.csv')
+writematrix(combined, 'StepDampingData5.csv')
 
 x_laser = -(simout1.Data -mean(simout1.Data(1)));
 x_actuator = simout.Data - mean(simout.Data(1));

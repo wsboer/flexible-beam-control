@@ -26,7 +26,7 @@ damp_data = abs(deflection(1538:end));
 damp_data = damp_data - max(deflection_noise);
 t_damp = t(1538:end);
 %Method 1
-threshold = 0.05*max(damp_data);
+threshold = 0.10*max(damp_data);
 t_settling = 0.0;
 for i=1:(length(damp_data)-180)
     if max(damp_data(i:i+180)) <= threshold
