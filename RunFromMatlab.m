@@ -7,8 +7,8 @@ Tsim = 15;
 %Time Vector 
 t = [0:h:Tsim]';
 %Input Vector
-amplitude = 10;
-omega = 11*pi;%2*pi*5.5;
+amplitude = 1;
+omega = 20;%2*pi*5.5;
 phase = 0;
 u_cycle = amplitude*sin(omega*t+phase); %Change this s.t. first 2 seconds have zero input to give time for B switch
 u_step = zeros(size(t)); 
@@ -28,7 +28,7 @@ u_step(t >= 11 & t < 11 + Tpulse) = v;
 
 
 
-u = 0*u_cycle ;%Choose which input to use 
+u = 0*2*square(10*t) ;%Choose which input to use 
 simin = [t,u]; %This goes into simulink
 %LQG Parameters:
 
@@ -38,9 +38,11 @@ simin = [t,u]; %This goes into simulink
 
 %Klqr =[-153.1577    0.7315];%25 25 t_settle = 11
 %Klqr = [-248.6818    1.9413]; %25 50 0.1
-Klqr = [-333.6516    3.4961]; % 40 80 0.1
+%Klqr = [-333.6516    3.4961]; % 40 80 0.1
+%Klqr = [-380.0294    4.5362]; %50 100 0.1
 %Klqr =[-102.8469    0.3287]; %15 15*
 %Klqr =[-174.9101    0.9595]; % 15 30
+Klqr =[-380.4670    4.5309];% 100 100 0.1
 
 %Klqr =[-24.5920    0.0186]; % 15 30 R = 1*
 %Klqr =[-46.7152    0.0678]; % 15 30 R = 0.5
@@ -50,6 +52,7 @@ Klqr = [-333.6516    3.4961]; % 40 80 0.1
 %Klqr = [-30.3308    0.0284]; % 15 30 R = 0.8 
 %Klqr =[-80.8856    0.2056]; % 15 90 R = 0.8 
 %Klqr = [0    0.000]; %t = 24.83
+
 A = [[0 1]
     [-(2*pi*5.5)^2 -2*2*pi*5.5*0.7499]];
 B = [-0.07528015464
