@@ -19,28 +19,37 @@ deflection = x_laser - x_actuator;
 %Time Domain Plots
 figure
 subplot(1,2,1)
-plot(t,x_laser,t,x_actuator)
-legend("Cantilever Position", "Cart Position")
+plot(t, x_laser, 'b-', 'LineWidth', 0.8)
+hold on
+plot(t, x_actuator, 'r-', 'LineWidth', 0.8)
+hold off
+xlabel('Time, t [s]')
+ylabel('Position [m]')
+legend('Cantilever tip position, x_{laser}', 'Cart position, x_{cart}')
+grid on
+
 subplot(1,2,2)
-plot(t, deflection)
+plot(t, deflection, 'g-', 'LineWidth', 0.8)
+xlabel('Time, t [s]')
+ylabel('Beam deflection, \delta [m]')
+grid on
 
 %FFT
-
 FFT_Chirp = fft(deflection);
 N = length(FFT_Chirp);
 f = (0:N-1)*(Fs/N);
 
 figure
-plot(f(1:floor(N/2)), abs(FFT_Chirp(1:floor(N/2))))
-xlabel('Frequency (Hz)')
-ylabel('|Y(f)|')
+plot(f(1:floor(N/2)), abs(FFT_Chirp(1:floor(N/2))), 'b-', 'LineWidth', 0.8)
+xlabel('Frequency, f [Hz]')
+ylabel('|Y(f)| [m]')
+xlim([0 7])
 grid on
 
 %PSD
-
 figure
-plot(f(1:floor(N/2)), 1/N*abs(FFT_Chirp(1:floor(N/2))).^2)
-xlabel('Frequency (Hz)')
-ylabel('1/N|Y(f)|^2')
+plot(f(1:floor(N/2)), 1/N*abs(FFT_Chirp(1:floor(N/2))).^2, 'b-', 'LineWidth', 0.8)
+xlabel('Frequency, f [Hz]')
+ylabel('PSD, (1/N)|Y(f)|^2 [m^2]')
+xlim([0 7])
 grid on
-

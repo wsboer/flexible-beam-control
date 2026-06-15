@@ -3,24 +3,24 @@ data = readtable('StepDampingData4.csv');
 noise_data = readtable("NoiseMeasurement.csv");
 h = 1e-3;
 Fs = 1/h;
-
+ 
 t = data.Var1;
 u = data.Var2;
 x_laser = data.Var4;
 x_actuator = data.Var3;
-
+ 
 x_laser_noise = -(noise_data.Var4-noise_data.Var4(1));
 x_actuator_noise = noise_data.Var3 - noise_data.Var3(1);
-
+ 
 deflection_noise = x_laser_noise - x_actuator_noise;
-
+ 
 %Processing
 %Set measurements to zero
 x_laser = -(x_laser - x_laser(1));
 x_actuator = x_actuator - x_actuator(1);
-
+ 
 deflection = x_laser - x_actuator;
-
+ 
 %Find Damping Coeff - 2 methods - Settling time & Log decrement
 damp_data = abs(deflection(1538:end));
 damp_data = damp_data - max(deflection_noise);
@@ -34,9 +34,9 @@ for i=1:(length(damp_data)-180)
         break
     end
 end
-
+ 
 t_settling
-
+ 
 %Method 2: We must use valid monotonically decreasing pairs
 [pks,locs] = findpeaks(damp_data);
 deltas = zeros(size(pks));
@@ -46,42 +46,49 @@ for i=1:(length(pks)-1)
         deltas(i) = delta_i;
     end
 end
-
+ 
 deltas = deltas(deltas ~= 0);
 delta = mean(deltas);
 delta = abs(delta)
-
-
+ 
+ 
 ksi = delta/(sqrt(4*pi^2 + delta^2))
-
-
+ 
+ 
 %Time Domain Plots
 figure
 subplot(1,2,1)
-plot(t,x_laser,t,x_actuator)
-legend("Cantilever Position", "Cart Position")
+plot(t, x_laser, 'b-', 'LineWidth', 0.8)
+hold on
+plot(t, x_actuator, 'r-', 'LineWidth', 0.8)
+hold off
+xlim([0 10])
+xlabel('Time, t [s]')
+ylabel('Position [m]')
+legend('Cantilever tip position, x_{laser}', 'Cart position, x_{cart}')
+grid on
+ 
 subplot(1,2,2)
-plot(t, deflection)
-
-
-
+plot(t, deflection, 'g-', 'LineWidth', 0.8)
+xlim([0 10])
+xlabel('Time, t [s]')
+ylabel('Beam deflection, \delta [m]')
+grid on
+ 
 %FFT
-
 FFT_Chirp = fft(deflection);
 N = length(FFT_Chirp);
 f = (0:N-1)*(Fs/N);
-
+ 
 figure
-plot(f(1:floor(N/2)), abs(FFT_Chirp(1:floor(N/2))))
-xlabel('Frequency (Hz)')
-ylabel('|Y(f)|')
+plot(f(1:floor(N/2)), abs(FFT_Chirp(1:floor(N/2))), 'b-', 'LineWidth', 0.8)
+xlabel('Frequency, f [Hz]')
+ylabel('|Y(f)| [m]')
 grid on
-
+ 
 %PSD
-
 figure
-plot(f(1:floor(N/2)), 1/N*abs(FFT_Chirp(1:floor(N/2))).^2)
-xlabel('Frequency (Hz)')
-ylabel('1/N|Y(f)|^2')
+plot(f(1:floor(N/2)), 1/N*abs(FFT_Chirp(1:floor(N/2))).^2, 'b-', 'LineWidth', 0.8)
+xlabel('Frequency, f [Hz]')
+ylabel('PSD, (1/N)|Y(f)|^2 [m^2]')
 grid on
-
