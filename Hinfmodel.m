@@ -83,7 +83,7 @@ lsim(CL, [d;d;d], t_sim)
 [Ak, Bk, Ck, Dk] = ssdata(K)
 
 %Simulation Duration
-Tsim = 10;
+Tsim = 15;
 %Time Vector 
 t = 0:h:Tsim;
 amplitude = 1;
