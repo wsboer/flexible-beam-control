@@ -35,7 +35,7 @@ sys = ss(A,B,C,D);
 %Weighting functions:
 %Sensitivity Weight: W_S, we'd like disturbance rejection at higher
 %unmodelled freqs (low-pass filter)
-W_S = makeweight(1.2,[wn,0.5],0.1);
+W_S = makeweight(1.5,[wn,1],0.1);
 
 %Complementary Sensitivity Weight: W_T, robustness to high-frequency
 %uncertainty
