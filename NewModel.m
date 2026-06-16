@@ -2,7 +2,7 @@ clear; clc;
 
 h = 1e-3;
 
-wn = 2*pi*5.5; %rad/s
+wn = 2*pi*5.53; %rad/s
 ksi = 0.749; %-
 alpha = 0.07528015464;
 tau = 0.008; %actuator dynamics included
@@ -85,5 +85,5 @@ Q = [[40 0 0]
 R = [[0.1]];
 
 [Klqr,S,P] = lqr(sys,Q,R)
-
+L
 Klqr
