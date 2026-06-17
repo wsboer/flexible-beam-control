@@ -1,5 +1,5 @@
 clear; clc;
-%format short e;
+format long e;
 h = 1e-3;
 
 wn = 2*pi*5.53; %rad/s
@@ -66,7 +66,7 @@ Qn = [[5.98e-8 0 0]
 
 Rn = 1e-4 * eye(3);
 
-[L,P,E] = lqe(Anew, G, Cnew, Qn, Rn);
+[L,P,E] = lqe(Anew, G, Cnew, Qn, Rn)
 
 
 Kalmansys = ss(Anew-L*Cnew,[Bnew L], eye(3), 0*[Bnew L])

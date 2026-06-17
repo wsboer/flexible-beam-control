@@ -32,11 +32,11 @@ Bkg = [Bnew, L];
 Ckg = eye(3);
 Dkg = zeros(3, 4);
 
-Klqr = [-4.7204e+02, -2.4792e+01, 2.4350e+01]; % Q=100,100,10 R=0.1
-
+%Klqr = [-4.7204e+02, -2.4792e+01, 2.4350e+01]; % Q=100,100,10 R=0.1
+Klqr = [0 0 0];
 %FREE VIBRATION-SETTLING TIME
 
-Tsim = 10;
+Tsim = 20;
 t    = (0:h:Tsim)';
 
 Tpulse = 0.05;
@@ -105,9 +105,9 @@ plot(t, u, 'k-', 'LineWidth', 0.8)
 xlabel('Time, t [s]')
 ylabel('Control input, u [V]')
 grid on
-
-writematrix([t, u, deflection, deflection_velocity], ...
-    'Exp1_FreeVibration_LQG.csv')
+% 
+% writematrix([t, u, deflection, deflection_velocity], ...
+%     'Exp1_FreeVibration_LQG.csv')
 
 
 % %REFERENCE TRACKING - SQUARE WAVE VELOCITY
