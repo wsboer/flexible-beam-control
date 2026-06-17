@@ -35,7 +35,7 @@ sys = ss(A,B,C,D);
 %Weighting functions:
 %Sensitivity Weight: W_S, we'd like disturbance rejection at higher
 %unmodelled freqs (low-pass filter)
-W_S = makeweight(1.2,[wn,0.5],0.1);
+W_S = makeweight(1.5,[wn,1],0.1);
 
 %Complementary Sensitivity Weight: W_T, robustness to high-frequency
 %uncertainty
@@ -83,7 +83,7 @@ lsim(CL, [d;d;d], t_sim)
 [Ak, Bk, Ck, Dk] = ssdata(K)
 
 %Simulation Duration
-Tsim = 10;
+Tsim = 15;
 %Time Vector 
 t = 0:h:Tsim;
 amplitude = 1;
