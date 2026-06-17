@@ -6,6 +6,14 @@ h = 1e-3;
 Tsim = 10;
 %Time Vector 
 t = [0:h:Tsim]';
+
+%TRACKING TASK INPUT - Square wave tracking (position)
+
+freq_ref = 5; %rad/s
+amp_ref = 4;
+
+r_pos = amp_ref*square(freq_ref*t);
+
 %Input Vector
 amplitude = 1;
 omega = 20;%2*pi*5.5;
@@ -25,7 +33,7 @@ u_step(t >= 8 & t < 8 + Tpulse) = -v;
 
 u_step(t >= 11 & t < 11 + Tpulse) = v;
 
-u = 0*2*square(10*t) ;%Choose which input to use 
+u = r_pos;%Choose which input to use 
 simin = [t,u]; %This goes into simulink
 
 %New 3 state model
@@ -67,33 +75,40 @@ Dkg = 0*[Bnew L];
 %Klqr =[-148.0020   -6.8846   10.9516]; %40 10 5, 0.1
 %Klqr =[-210.0914   -9.7652   15.8781]; %80 20 10, 0.1
 %Klqr =[-102.2262   -4.4279    9.5164]; %100 5 5, 0.1
-Klqr = [-144.8414   -6.2975   13.8064]; %150 10 10, 0.1
-
+%Klqr = [-144.8414   -6.2975   13.8064]; %150 10 10, 0.1
+Klqr =[-4.7204e+02  -2.4792e+01   2.4350e+01]; %100 100 10, 0.1
 %Start Simulation
 sim festotemplate.slx
 
 %Collect output data
 
-figure
+% figure
 x_laser = -(simout1.Data -mean(simout1.Data(1)));
 x_actuator = simout.Data - mean(simout.Data(1));
 Beam_deflection = x_laser-x_actuator;
-subplot(1,2,1)
-plot(t,x_laser,t,x_actuator)
-legend("Cantilever Position", "Cart Position")
-subplot(1,2,2)
-title("Beam Deflection")
-plot(t, Beam_deflection)
+% subplot(1,2,1)
+% plot(t,x_laser,t,x_actuator)
+% legend("Cantilever Position", "Cart Position")
+% subplot(1,2,2)
+% title("Beam Deflection")
+% plot(t, Beam_deflection)
 
 
 deflection = simout2.Data(end-size(t)+1:end);
 deflection_velocity = simout3.Data(end-size(t)+1:end);
 
 figure
-plot(t,deflection,t,deflection_velocity)
+subplot(1,2,1)
+plot(t,u, 'g-',LineWidth=0.8); hold on
+plot(t,x_actuator,'r-',LineWidth=0.8); hold off
+grid on
+subplot(1,2,2)
+plot(t,deflection, 'b-', LineWidth=0.8); hold on
+plot(t,deflection_velocity, 'r-', LineWidth=0.8); hold off
 ylim([-0.15,0.15])
 legend("Beam Deflection", "Beam Deflection Velocity")
 grid on
+
 
 
 

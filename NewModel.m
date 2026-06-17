@@ -1,5 +1,5 @@
 clear; clc;
-format short e;
+%format short e;
 h = 1e-3;
 
 wn = 2*pi*5.53; %rad/s
@@ -76,8 +76,8 @@ Bkg = [Bnew L];
 Ckg = eye(3);
 Dkg = 0*[Bnew L];
 
-Q = [[150 0 0]
-    [0 10 0]
+Q = [[100 0 0]
+    [0 100 0]
     [0 0 10]];
 
 R = [[0.1]];
