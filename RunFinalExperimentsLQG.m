@@ -32,8 +32,8 @@ Bkg = [Bnew, L];
 Ckg = eye(3);
 Dkg = zeros(3, 4);
 
-%Klqr = [-4.7204e+02, -2.4792e+01, 2.4350e+01]; % Q=100,100,10 R=0.1
-Klqr = [0 0 0];
+Klqr = [-4.7204e+02, -2.4792e+01, 2.4350e+01]; % Q=100,100,10 R=0.1
+
 %FREE VIBRATION-SETTLING TIME
 
 Tsim = 20;
