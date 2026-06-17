@@ -1,5 +1,5 @@
 clear; clc;
-
+format short e;
 h = 1e-3;
 
 wn = 2*pi*5.53; %rad/s
@@ -64,14 +64,16 @@ legend("Deflection","Deflection Velocity", "Cart Velocity")
 
 G = eye(3);
 
-Qn = [[1e-6 0 0] 
-    [0 1e-4 0]
+Qn = [[5.98e-8 0 0] 
+    [0 2.35e-4 0]
     [0 0 1e-5]];
+
 Rn = 1e-4 * eye(3);
 
 [L,P,E] = lqe(A, G, C, Qn, Rn);
 
 Kalmansys = ss(A-L*C,[B L], eye(3), 0*[B L])
+eig(Kalmansys)
 
 Ak = A-L*C;
 Bk = [B L];

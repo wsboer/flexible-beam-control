@@ -1,5 +1,5 @@
 clear; clc;
-
+format short e
 h = 1e-3;
 
 wn = 2*pi*5.53; %rad/s
